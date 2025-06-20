@@ -1,3 +1,4 @@
+
 # Cozy Pixel MP3 Player
 
 This is a small pixel‑style MP3 player web app. Open `index.html` in your browser to try it out.

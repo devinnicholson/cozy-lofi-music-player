@@ -117,4 +117,3 @@ themeSelect.addEventListener('change', () => {
 });
 
 loadTrack(0);
-
