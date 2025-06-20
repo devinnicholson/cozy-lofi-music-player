@@ -1,307 +1,120 @@
-const canvas=document.getElementById('scene');
-const ctx=canvas.getContext('2d');
-let currentScene=0;
-const scenes=['fireplace','cat','typing'];
-const frames={};
+const canvas = document.getElementById('art');
+const ctx = canvas.getContext('2d');
+const playBtn = document.getElementById('play');
+const prevBtn = document.getElementById('prev');
+const nextBtn = document.getElementById('next');
+const volume = document.getElementById('volume');
+const timerInput = document.getElementById('timer');
+const setTimer = document.getElementById('setTimer');
+const themeSelect = document.getElementById('theme');
 
-function drawFrame(frame){
-    const scale=4; // each pixel 4x
-    canvas.width=frame[0].length*scale;
-    canvas.height=frame.length*scale;
-    ctx.imageSmoothingEnabled=false;
-    for(let y=0;y<frame.length;y++){
-        for(let x=0;x<frame[0].length;x++){
-            ctx.fillStyle=frame[y][x];
-            ctx.fillRect(x*scale,y*scale,scale,scale);
-        }
-    }
-}
-
-// ----- FRAME DATA -----
-frames.fireplace=[
-    [
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#ff7828','#ff7828','#ffb43c','#ffb43c','#ff7828','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#ff7828','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#ff7828','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#ff7828','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#501e0a','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#501e0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#501e0a','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#501e0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#501e0a','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#501e0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a']
-    ],
-    // frame 2
-    [
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#ff7828','#ff7828','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#ff7828','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#ff7828','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#ff7828','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#501e0a','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#501e0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#501e0a','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#501e0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#501e0a','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#501e0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a']
-    ],
-    // frame 3 and 4
-    [
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#ff7828','#ff7828','#ffb43c','#ffb43c','#ff7828','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#ff7828','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#ff7828','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#ff7828','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#501e0a','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#501e0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#501e0a','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#501e0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#501e0a','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#501e0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a']
-    ],
-    [
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#ff7828','#ff7828','#ffb43c','#ffb43c','#ff7828','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#ff7828','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#ff7828','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#ff7828','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ffb43c','#ff7828','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#501e0a','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#501e0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#501e0a','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#501e0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#501e0a','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#502a0f','#501e0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a'],
-        ['#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a','#1e0f0a']
-    ]
+// simple 8x8 pixel sprites for album art
+const sprites = [
+  [
+    '22222222',
+    '2ff22ff2',
+    '2ff22ff2',
+    '22222222',
+    '22ffff22',
+    '22ffff22',
+    '22222222',
+    '22222222'
+  ],
+  [
+    '22333322',
+    '23333332',
+    '33333333',
+    '33333333',
+    '33333333',
+    '33333333',
+    '23333332',
+    '22333322'
+  ],
+  [
+    '24444442',
+    '24444442',
+    '44444444',
+    '44444444',
+    '44444444',
+    '44444444',
+    '24444442',
+    '24444442'
+  ]
 ];
-// Cat walk frames
-frames.cat=[
-    [
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#c8a0a0','#c8a0a0','#ffcccc','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#ffcccc','#c8a0a0','#c8a0a0','#323250','#323250','#323250'],
-        ['#323250','#323250','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#323250','#323250'],
-        ['#323250','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#323250'],
-        ['#323250','#c8a0a0','#c8a0a0','#323250','#323250','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#323250','#323250','#c8a0a0','#c8a0a0','#323250'],
-        ['#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250'],
-        ['#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250'],
-        ['#323250','#323250','#c8a0a0','#323250','#323250','#323250','#c8a0a0','#323250','#323250','#c8a0a0','#323250','#323250','#323250','#c8a0a0','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250']
-    ],
-    // walking frame 2
-    [
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#c8a0a0','#c8a0a0','#ffcccc','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#ffcccc','#c8a0a0','#c8a0a0','#323250','#323250','#323250'],
-        ['#323250','#323250','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#323250','#323250'],
-        ['#323250','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#323250'],
-        ['#323250','#c8a0a0','#c8a0a0','#323250','#323250','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#c8a0a0','#323250','#323250','#c8a0a0','#c8a0a0','#323250'],
-        ['#323250','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#323250'],
-        ['#323250','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#c8a0a0','#c8a0a0','#323250','#323250'],
-        ['#323250','#323250','#323250','#c8a0a0','#323250','#323250','#323250','#c8a0a0','#323250','#323250','#c8a0a0','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250'],
-        ['#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250','#323250']
-    ],
-    // frame3 (repeat 1) and frame4 (repeat 2)
-];
-frames.cat.push(frames.cat[0]);
-frames.cat.push(frames.cat[1]);
+const colors = {
+  '2': '#331a00',
+  '3': '#774400',
+  '4': '#ffcc33',
+  'f': '#ff7777'
+};
 
-// Typing frames
-frames.typing=[
-    [
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#1e5078','#1e5078','#1e5078','#1e5078','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#a07878','#a07878','#a07878','#a07878','#a07878','#a07878','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#a07878','#a07878','#a07878','#a07878','#a07878','#a07878','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828']
-    ],
-    [
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#1e5078','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#a07878','#a07878','#a07878','#a07878','#a07878','#a07878','#a07878','#a07878','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#a07878','#a07878','#a07878','#a07878','#a07878','#a07878','#a07878','#a07878','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828'],
-        ['#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828','#3c2828']
-    ]
-];
-
-let frameIndex=0;
-function animate(){
-    const key=scenes[currentScene];
-    const arr=frames[key];
-    drawFrame(arr[frameIndex%arr.length]);
-    frameIndex++;
-    requestAnimationFrame(animate);
-}
-
-animate();
-
-// ----- AUDIO -----
-const audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-let musicGain=audioCtx.createGain();
-let fireGain=audioCtx.createGain();
-musicGain.connect(audioCtx.destination);
-fireGain.connect(audioCtx.destination);
-
-function createLofiTrack(freqs){
-    const dur=0.5;
-    const osc=audioCtx.createOscillator();
-    const gain=audioCtx.createGain();
-    const filter=audioCtx.createBiquadFilter();
-    filter.type='lowpass';
-    filter.frequency.value=800;
-    osc.type='sine';
-    osc.connect(filter);
-    filter.connect(gain);
-    gain.connect(musicGain);
-    let t=audioCtx.currentTime;
-    freqs.forEach(f=>{
-        osc.frequency.setValueAtTime(f,t);
-        gain.gain.setValueAtTime(0.4,t);
-        t+=dur;
-    });
-    osc.start();
-    osc.stop(t);
-    return osc;
-}
-
-let currentOscs=[];
-function playMusic(){
-    stopMusic();
-    const loops=[[220,330,440,330],[240,300,360,300],[200,260,320,260]];
-    loops.forEach((notes,i)=>{
-        const osc=createLofiTrack(notes);
-        osc.onended=()=>{if(audioPlaying)playMusic();};
-        currentOscs.push(osc);
-    });
-}
-
-function stopMusic(){
-    currentOscs.forEach(o=>o.stop());
-    currentOscs=[];
-}
-
-function playFire(){
-    const buffer=audioCtx.createBuffer(1, audioCtx.sampleRate*1, audioCtx.sampleRate);
-    const data=buffer.getChannelData(0);
-    for(let i=0;i<data.length;i++){
-        data[i]=Math.random()*2-1;
-        if(Math.random()<0.98)data[i]*=0.2;
+function drawSprite(data){
+  const scale = 8;
+  canvas.width = data[0].length * scale;
+  canvas.height = data.length * scale;
+  ctx.imageSmoothingEnabled = false;
+  for(let y=0; y<data.length; y++){
+    for(let x=0; x<data[y].length; x++){
+      const c = colors[data[y][x]] || '#000';
+      ctx.fillStyle = c;
+      ctx.fillRect(x*scale, y*scale, scale, scale);
     }
-    const src=audioCtx.createBufferSource();
-    src.buffer=buffer;
-    src.loop=true;
-    src.connect(fireGain);
-    src.start();
-    return src;
+  }
 }
 
-let fireSrc;
-let audioPlaying=false;
+// tiny mp3 samples encoded as data URIs (simple beeps)
+const tracks = [
+  'data:audio/mpeg;base64,//uQxAADBQAAQAEAN0AAAB9AAACcQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+  'data:audio/mpeg;base64,//uQxAALBQAAQAEAN0AAAB9AAACcQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+  'data:audio/mpeg;base64,//uQxAATBQAAQAEAN0AAAB9AAACcQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+];
+let trackIndex = 0;
+const audio = new Audio(tracks[trackIndex]);
+audio.loop = true;
+audio.volume = volume.value;
 
-document.getElementById('play').addEventListener('click',()=>{
-    if(!audioPlaying){
-        if(audioCtx.state==='suspended') audioCtx.resume();
-        playMusic();
-        fireSrc=playFire();
-        audioPlaying=true;
-        document.getElementById('play').innerText='Pause';
-    }else{
-        stopMusic();
-        fireSrc.stop();
-        audioPlaying=false;
-        document.getElementById('play').innerText='Play';
-    }
-});
-
-document.getElementById('musicVol').addEventListener('input',e=>{
-    musicGain.gain.value=e.target.value;
-});
-
-document.getElementById('fireVol').addEventListener('input',e=>{
-    fireGain.gain.value=e.target.value;
-});
-
-// ----- Timer -----
-let timerId=null;
-document.getElementById('setTimer').addEventListener('click',()=>{
-    const minutes=parseInt(document.getElementById('timer').value,10);
-    if(timerId)clearTimeout(timerId);
-    timerId=setTimeout(()=>{
-        if(audioPlaying){
-            stopMusic();
-            fireSrc.stop();
-            audioPlaying=false;
-            document.getElementById('play').innerText='Play';
-        }
-    },minutes*60000);
-});
-
-// ----- Theme -----
-const body=document.body;
-function updateTheme(){
-    body.className='theme-'+document.getElementById('theme').value;
+function loadTrack(i){
+  trackIndex = (i + tracks.length) % tracks.length;
+  audio.src = tracks[trackIndex];
+  drawSprite(sprites[trackIndex]);
 }
-document.getElementById('theme').addEventListener('change',updateTheme);
-updateTheme();
 
-// ----- Scene switching -----
-document.getElementById('prev').addEventListener('click',()=>{
-    currentScene=(currentScene-1+scenes.length)%scenes.length;
+playBtn.addEventListener('click', () => {
+  if(audio.paused){
+    audio.play();
+    playBtn.textContent = 'Pause';
+  } else {
+    audio.pause();
+    playBtn.textContent = 'Play';
+  }
 });
-document.getElementById('next').addEventListener('click',()=>{
-    currentScene=(currentScene+1)%scenes.length;
+
+prevBtn.addEventListener('click', () => {
+  loadTrack(trackIndex - 1);
+  if(!audio.paused) audio.play();
 });
+
+nextBtn.addEventListener('click', () => {
+  loadTrack(trackIndex + 1);
+  if(!audio.paused) audio.play();
+});
+
+volume.addEventListener('input', () => {
+  audio.volume = volume.value;
+});
+
+let timerId = null;
+setTimer.addEventListener('click', () => {
+  if(timerId) clearTimeout(timerId);
+  const minutes = parseInt(timerInput.value, 10) || 0;
+  if(minutes > 0){
+    timerId = setTimeout(() => { audio.pause(); playBtn.textContent = 'Play'; }, minutes * 60000);
+  }
+});
+
+themeSelect.addEventListener('change', () => {
+  document.body.className = 'theme-' + themeSelect.value;
+});
+
+loadTrack(0);
+
