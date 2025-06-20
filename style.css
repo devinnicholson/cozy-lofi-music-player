@@ -1,0 +1,31 @@
+body{
+    background:#663300;
+    color:#fff;
+    font-family:monospace;
+    text-align:center;
+}
+#player{
+    width:260px;
+    margin:40px auto;
+}
+canvas{
+    image-rendering:pixelated;
+    width:256px;
+    height:256px;
+    border:4px solid #fff;
+}
+.controls{
+    margin-top:8px;
+}
+.controls button{
+    background:#222;
+    color:#fff;
+    border:none;
+    padding:4px 8px;
+    margin:0 2px;
+    cursor:pointer;
+}
+.controls input[type="range"]{width:80px;}
+.theme-warm{background:#663300;}
+.theme-cool{background:#335566;}
+.theme-dark{background:#222;}
