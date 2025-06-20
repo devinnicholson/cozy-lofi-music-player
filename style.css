@@ -1,0 +1,37 @@
+body{
+    background:#663300;
+    color:#fff;
+    font-family:monospace;
+    text-align:center;
+}
+#app{
+    position:relative;
+    width:320px;
+    margin:40px auto;
+}
+canvas{
+    image-rendering:pixelated;
+    width:256px;
+    height:256px;
+    border:4px solid #fff;
+}
+.arrow{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:24px;
+    cursor:pointer;
+    user-select:none;
+    background:#222;
+    color:#fff;
+    padding:4px 8px;
+}
+.left{left:-40px;}
+.right{right:-40px;}
+.controls{
+    margin-top:10px;
+}
+.controls input[type="range"]{width:80px;}
+.theme-warm{background:#663300;}
+.theme-cool{background:#335566;}
+.theme-dark{background:#222;}
